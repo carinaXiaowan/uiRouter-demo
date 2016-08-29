@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ui-router嵌套路由</title>
+    <script data-require="angular.js@1.2.10" data-semver="1.2.10" src="http://code.angularjs.org/1.2.10/angular.min.js"></script>
+    <script data-require="angular-animate@1.2.11" data-semver="1.2.11" src="http://code.angularjs.org/1.2.11/angular-animate.min.js"></script>
+    <script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
+</head>
+
+<body>
+    <div ng-app="myApp">
+        <!-- 嵌套路由 -->
+        <div ui-view></div>
+    </div>
+    <script type="text/javascript">
+    angular.module("myApp", ['ui.router'])
+        .config(function($stateProvider, $urlRouterProvider) {
+            $stateProvider
+                .state("home", {
+                    url: "/:inboxId",
+                    template: "<h1>Welcome to your inbox</h1>\
+            				   	 <a ui-sref='home.list'>Show list</a>\
+           					  	 <div ui-view></div>\
+           					   </div>",
+                    controller: function($scope, $stateParams) {
+                        $scope.inboxId = $stateParams.inboxId;
+                    }
+                })
+                .state("home.list",{
+                	url:"/list",
+                	template:"<div>我是嵌套的url</div>"
+                })
+        })
+    </script>
+</body>
+
+</html>

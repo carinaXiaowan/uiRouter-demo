@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ui-router(抽象模板)</title>
+    <script data-require="angular.js@1.2.10" data-semver="1.2.10" src="http://code.angularjs.org/1.2.10/angular.min.js"></script>
+    <script data-require="angular-animate@1.2.11" data-semver="1.2.11" src="http://code.angularjs.org/1.2.11/angular-animate.min.js"></script>
+    <script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
+</head>
+
+<body ng-app="myApp">
+    <div ui-view></div>
+    <script type="text/ng-template" id="detail.html">
+        <div ui-view="left"></div>
+        <div ui-view="right"></div>
+    </script>
+    <script type="text/javascript">
+    angular.module("myApp", ['ui.router'])
+        .config(function($stateProvider, $urlRouterProvider) {
+            $stateProvider
+                .state('admin', {
+                    abstract: true,
+                    url: '/admin',
+                    template: '<div ui-view></div>'
+                })
+                .state('admin.index', {
+                    url: '/index',
+                    template: '<h3>Admin index</h3>'
+                })
+                .state('admin.users', {
+                    url: '/users',
+                    template: '<ul>...</ul>'
+                })
+                .state("about", {
+                    url: '/about',
+                    template: "<a ui-sref='admin.index'>点击我返回主目录</a>"
+                })
+                .state("detail", {
+                    url: '/detail',
+                    views: {
+                        '': {
+                            templateUrl: 'detail.html'
+                        },
+                        'left@detail': {
+                            template: "<a ui-sref='admin.index'>点击我返回主目录</a>",
+                            controller: function($scope) {
+                                $scope.$on('$stateChangeStart',
+                                    function(evt, toState, toParams, fromState, fromParams){
+                                        alert(1)
+                                    });
+                            }
+                        },
+                        'right@detail': {
+                            template: "我是详细信息"
+                        }
+
+                    }
+                })
+        })
+    </script>
+</body>
+
+</html>

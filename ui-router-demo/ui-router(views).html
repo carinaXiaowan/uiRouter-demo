@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ui-router嵌套路由</title>
+    <script data-require="angular.js@1.2.10" data-semver="1.2.10" src="http://code.angularjs.org/1.2.10/angular.min.js"></script>
+    <script data-require="angular-animate@1.2.11" data-semver="1.2.11" src="http://code.angularjs.org/1.2.11/angular-animate.min.js"></script>
+    <script src="http://angular-ui.github.io/ui-router/release/angular-ui-router.min.js"></script>
+    <style type="text/css">
+    [ui-view="filters"] {
+        height: 100px;
+        width: 200px;
+        background: yellow;
+        float: left;
+    }
+    
+    [ui-view="mailbox"] {
+        height: 100px;
+        width: 200px;
+        background: red;
+        float: left;
+        margin-left: 20px;
+    }
+    
+    [ui-view="priority"] {
+        height: 100px;
+        width: 200px;
+        background: blue;
+        float: left;
+        margin-left: 20px;
+    }
+    </style>
+</head>
+
+<body>
+    <div ng-app="myApp">
+        <!-- 单个视图中，定义多个视图 -->
+        <div ui-view="filters"></div>
+        <div ui-view="mailbox"></div>
+        <div ui-view="priority"></div>
+    </div>
+    <script type="text/javascript">
+    angular.module("myApp", ['ui.router'])
+        .config(function($stateProvider, $urlRouterProvider) {
+            $stateProvider
+                .state("home", {
+                    url: '/',
+                    views: {
+                        'filters': {
+                            template: '<h4>Filter inbox</h4>'
+                        },
+                        'mailbox': {
+                            template: '<h4>mailbox inbox</h4>'
+                        },
+                        'priority': {
+                            template: '<h4>Priority inbox</h4>'
+                        }
+
+                    }
+                })
+        })
+    </script>
+</body>
+
+</html>
